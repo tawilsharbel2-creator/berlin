@@ -7,68 +7,99 @@
 
 <style>
 
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+*{box-sizing:border-box;margin:0;padding:0;}
 
 body{
-  background:#111;
-  color:white;
+  min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  min-height:100vh;
-  font-family:Arial, sans-serif;
-  padding:20px;
+  flex-direction:column;
+  font-family:system-ui,Arial;
+  color:white;
+  overflow:hidden;
+
+  /* animated gradient background */
+  background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#000000);
+  background-size:400% 400%;
+  animation:bg 12s ease infinite;
 }
 
-/* CLOCK LAYOUT */
+@keyframes bg{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* TITLE */
+
+h1{
+  font-size:clamp(32px,6vw,70px);
+  margin-bottom:35px;
+  letter-spacing:3px;
+  text-align:center;
+  text-shadow:0 10px 40px rgba(0,0,0,.6);
+}
+
+/* CLOCK */
+
 .clock{
   display:flex;
-  gap:clamp(8px,3vw,18px);
+  gap:clamp(12px,3vw,28px);
   flex-wrap:wrap;
   justify-content:center;
 }
 
-/* EACH UNIT */
+/* CARD */
+
 .box{
   text-align:center;
 }
 
-/* NUMBER STYLE */
+/* GLASS NUMBER */
+
 .num{
-  background:#000;
-  padding:clamp(14px,4vw,28px) clamp(16px,5vw,32px);
-  font-size:clamp(28px,8vw,64px);
-  border-radius:14px;
+  font-size:clamp(32px,7vw,70px);
+  padding:clamp(18px,4vw,34px);
+  min-width:clamp(90px,18vw,140px);
+
+  border-radius:20px;
+
+  /* glass effect */
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(10px);
+
+  border:1px solid rgba(255,255,255,.15);
+
   box-shadow:
-    0 10px 0 #2a2a2a,
-    0 18px 30px rgba(0,0,0,.6);
-  min-width:clamp(70px,18vw,110px);
-  transition:.2s;
+  0 0 25px rgba(0,0,0,.6),
+  inset 0 0 20px rgba(255,255,255,.05);
+
+  transition:.35s;
 }
 
-/* LABEL */
+/* glow on update */
+.num.flash{
+  box-shadow:
+  0 0 35px rgba(0,200,255,.9),
+  inset 0 0 30px rgba(0,200,255,.25);
+}
+
+/* label */
+
 .label{
-  margin-top:10px;
-  font-size:clamp(11px,2.5vw,15px);
-  opacity:.7;
-  letter-spacing:1px;
-}
-
-/* SMALL PHONES */
-@media (max-width:420px){
-  .clock{
-    gap:10px;
-  }
+  margin-top:12px;
+  font-size:13px;
+  letter-spacing:2px;
+  opacity:.8;
 }
 
 </style>
 </head>
 
 <body>
+
+<h1>OPENING SOON</h1>
 
 <div class="clock">
 
@@ -84,12 +115,12 @@ body{
 
 <div class="box">
 <div class="num" id="minutes">00</div>
-<div class="label">MIN</div>
+<div class="label">MINUTES</div>
 </div>
 
 <div class="box">
 <div class="num" id="seconds">00</div>
-<div class="label">SEC</div>
+<div class="label">SECONDS</div>
 </div>
 
 </div>
@@ -98,13 +129,19 @@ body{
 
 const target = new Date("April 1, 2026 00:00:00").getTime();
 
+function flash(id){
+  const el=document.getElementById(id);
+  el.classList.add("flash");
+  setTimeout(()=>el.classList.remove("flash"),300);
+}
+
 function update(){
 
   const now = new Date().getTime();
   const diff = target - now;
 
   if(diff<=0){
-    document.body.innerHTML="<h1 style='font-size:8vw'>OPEN</h1>";
+    document.body.innerHTML="<h1 style='font-size:9vw'>WE ARE OPEN</h1>";
     return;
   }
 
@@ -117,6 +154,8 @@ function update(){
   document.getElementById("hours").textContent=h;
   document.getElementById("minutes").textContent=m;
   document.getElementById("seconds").textContent=s;
+
+  flash("seconds");
 
 }
 
