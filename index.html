@@ -1,44 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
 body{
   background:#111;
   color:white;
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
-  font-family:Arial;
+  min-height:100vh;
+  font-family:Arial, sans-serif;
+  padding:20px;
 }
 
+/* CLOCK LAYOUT */
 .clock{
   display:flex;
-  gap:15px;
+  gap:clamp(8px,3vw,18px);
+  flex-wrap:wrap;
+  justify-content:center;
 }
 
+/* EACH UNIT */
 .box{
   text-align:center;
 }
 
+/* NUMBER STYLE */
 .num{
-  background:black;
-  padding:20px 25px;
-  font-size:55px;
-  border-radius:12px;
-  box-shadow:0 8px 0 #333;
-  min-width:90px;
+  background:#000;
+  padding:clamp(14px,4vw,28px) clamp(16px,5vw,32px);
+  font-size:clamp(28px,8vw,64px);
+  border-radius:14px;
+  box-shadow:
+    0 10px 0 #2a2a2a,
+    0 18px 30px rgba(0,0,0,.6);
+  min-width:clamp(70px,18vw,110px);
+  transition:.2s;
 }
 
+/* LABEL */
 .label{
-  margin-top:8px;
-  font-size:14px;
+  margin-top:10px;
+  font-size:clamp(11px,2.5vw,15px);
   opacity:.7;
+  letter-spacing:1px;
 }
-</style>
 
+/* SMALL PHONES */
+@media (max-width:420px){
+  .clock{
+    gap:10px;
+  }
+}
+
+</style>
 </head>
+
 <body>
 
 <div class="clock">
@@ -75,7 +104,7 @@ function update(){
   const diff = target - now;
 
   if(diff<=0){
-    document.body.innerHTML="<h1>OPEN</h1>";
+    document.body.innerHTML="<h1 style='font-size:8vw'>OPEN</h1>";
     return;
   }
 
